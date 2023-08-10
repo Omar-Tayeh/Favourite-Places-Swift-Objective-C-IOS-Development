@@ -8,11 +8,11 @@
 import UIKit
 import CoreData
 
+
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
-
+      
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         return true
@@ -61,6 +61,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return container
     }()
 
+//    func favplaces(name: String, lon: Double, lat: Double) -> FavPlaces {
+//
+//        let newPlace = FavPlaces(context: persistentContainer.viewContext)
+//        newPlace.name = name
+//        newPlace.lon = lon
+//        newPlace.lat = lat
+//  return newPlace
+    
+    
     // MARK: - Core Data Saving support
 
     func saveContext () {
@@ -78,4 +87,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 }
+
 

@@ -6,24 +6,25 @@
 //
 
 import UIKit
-
+import CoreData
 var places = [[String : String]()]
 var currentPlace = -1
 
 
 class PlacesViewController: UITableViewController {
 
-    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     @IBOutlet var table: UITableView!
     
     
     
-    
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        
+        
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -48,33 +49,34 @@ class PlacesViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) ->
     UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath)
+       
         if places[indexPath.row]["name"] != nil {
             cell.textLabel?.text = places[indexPath.row]["name"]
+            
+           
         }
         return cell
+        
+        
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         currentPlace = indexPath.row
+        
         performSegue(withIdentifier: "toMap", sender: nil)
     }
+    
 
     override func viewDidAppear(_ animated: Bool) {
          if places.count == 1 && places[0].count == 0 {
           places.remove(at: 0)
-          places.append(["name":"Ashton Building", "lat": "53.406566", "lon": "-2.966531"])
+          places.append()
    }
         currentPlace = -1
         table.reloadData()
+           
+        
       }
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     

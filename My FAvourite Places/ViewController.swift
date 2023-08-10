@@ -7,8 +7,37 @@
 
 import UIKit
 import MapKit
+import CoreData
 class ViewController: UIViewController, MKMapViewDelegate {
-
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+//    let context = appDelegate.persistentContainer.viewContext
+    
+    var models : [FavPlaces] = []
+    func FetReq (){
+           // Create the request
+        let request: NSFetchRequest<FavPlaces> = FavPlaces.fetchRequest()
+    
+//            request.returnsObjectsAsFaults = false
+//            // Set the sort descriptor
+//            request.sortDescriptors?.append(NSSortDescriptor(key: "name", ascending: true))
+            do {
+                let results = try context.fetch(request)
+                
+                for data in results { // Loop through all the fav reports from CoreData
+                    let name = data.value(forKey: "name") as? String
+                print("fetched")
+                    
+                }
+            } catch {
+            print("Couldn 't fetch results")
+        
+            }
+        
+            }
+    
+    
+    
     
     
     @IBOutlet weak var map: MKMapView!
@@ -44,14 +73,42 @@ class ViewController: UIViewController, MKMapViewDelegate {
                             self.map.addAnnotation(annotation)
                             places.append(["name":title, "lat": String(newCoordinate.latitude), "lon":
             String(newCoordinate.longitude)])
-                        } )
-                    }
-                }
+                            print("passed")
+                        }
+                
+                        )
+            
+//            func createItem(name: String, lon: String, lat: String){
+            let models = FavPlaces(context: context)
+            
+            models.name = title
+            models.lon = String(newCoordinate.latitude)
+            models.lat = String(newCoordinate.longitude)
+
+        do {
+                     try context.save()
+                      
+                     print("Saved")
+                FetReq()
+                      
+                 } catch {
+                     print("error")
+
+                 }
+            }
+        }
+     
+      
+//                }
+    
+    
+    
     
     override func viewDidLoad() {
           super.viewDidLoad()
           // Do any additional setup after loading the view, typically from a nib.
-          
+        
+        
           guard currentPlace != -1  else { return }
           guard places.count > currentPlace else { return }
           guard let name = places[currentPlace]["name"] else { return }
@@ -69,7 +126,17 @@ class ViewController: UIViewController, MKMapViewDelegate {
           annotation.title = name
           self.map.addAnnotation(annotation)
           print(currentPlace)
-      }
+ 
+        
+       
+        FetReq()
+      
+    }
+    
+    
+ 
+    
+    
+              }
 
-}
 
